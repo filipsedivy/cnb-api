@@ -14,8 +14,8 @@
     ]
   },
   "require"    : {
-    "php"     : ">= 5.6.0",
-    "ext-curl": "*",
+    "php"          : ">= 5.6.0",
+    "ext-curl"     : "*",
     "nette/caching": "^2.5"
   }
 }
