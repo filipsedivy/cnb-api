@@ -29,7 +29,7 @@ class Request
      */
     public function __construct($date = null)
     {
-        $date = is_null($date) ? new DateTime() : $date;
+        $date = Helper::fixDateTime($date);
         $this->setDate($date);
     }
 
