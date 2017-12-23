@@ -20,9 +20,10 @@ $cnb = new CnbApi();
 
 ### CnbApi methods
 
-| Methods                                                                     |
-| --------------------------------------------------------------------------- |
-| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator` |                             |
+| Methods                                                                         |
+| ------------------------------------------------------------------------------- |
+| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator`     |                             |
+| $cnb->getExchangeRateByCurrencyCode(`$currency_code`, `$date`) : `ExchangeRate` |
 
 ### Object iterator
 
