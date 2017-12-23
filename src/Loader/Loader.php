@@ -14,6 +14,7 @@
 namespace CnbApi\Loader;
 
 use InvalidArgumentException;
+use LogicException;
 
 class Loader
 {
@@ -46,7 +47,13 @@ class Loader
     {
         $url = $this->request->getUrl();
         $ctx = $this->getCtx();
-        return file_get_contents($url, false, $ctx);
+        $content = @file_get_contents($url, false, $ctx);
+        if ($content === false)
+        {
+            throw new LogicException('Network connection not available');
+        }
+
+        return $content;
     }
 
 
@@ -68,6 +75,7 @@ class Loader
         return stream_context_create(array(
             'http' => array(
                 'timeout' => $this->timeout,
+                'ignore_errors' => true
             )
         ));
     }
