@@ -4,8 +4,6 @@
  * Example low level access
  */
 
-ini_set('display_errors', 'on');
-
 require_once __DIR__ . '/../vendor/autoload.php';
 
 $request = new \CnbApi\Loader\Request();
