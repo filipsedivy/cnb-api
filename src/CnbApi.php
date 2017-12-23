@@ -29,4 +29,19 @@ class CnbApi
         return ExchangeRateService::getRates($date);
     }
 
+
+    /**
+     * @param string $currency_code
+     * @param null   $date
+     *
+     * @return \CnbApi\Entity\ExchangeRate|null|object
+     */
+    public function getExchangeRateByCurrencyCode($currency_code, $date = null)
+    {
+        $currency_code = strtoupper($currency_code);
+        $rates = $this->getExchangeRates($date);
+        $rates->addEqual(ExchangeRateIterator::COLUMN_CURRENCY_CODE, $currency_code);
+        return $rates->fetch();
+    }
+
 }
