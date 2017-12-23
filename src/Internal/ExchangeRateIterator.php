@@ -35,9 +35,9 @@ class ExchangeRateIterator extends ObjectIterator
     /**
      * @return ExchangeRate[]
     */
-    public function getList()
+    public function fetchAll()
     {
-        return parent::getList();
+        return parent::fetchAll();
     }
 
 

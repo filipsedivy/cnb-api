@@ -76,7 +76,7 @@ abstract class ObjectIterator
     /**
      * @return array|null
      */
-    public function getList()
+    public function fetchAll()
     {
         $this->applyConditionals($list);
         return $list;
@@ -88,7 +88,7 @@ abstract class ObjectIterator
     public function fetch()
     {
         if (is_null($this->limit)) $this->setLimit(1);
-        $list = $this->getList();
+        $list = $this->fetchAll();
         return $list[0];
     }
 
