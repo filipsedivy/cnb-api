@@ -9,6 +9,40 @@ composer require filipsedivy/cnb-api
 
 The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1).
 
+Documentation
+-------------
+
+### Create an object
+
+```php
+$cnb = new CnbApi();
+```
+
+### CnbApi methods
+
+| Methods                                                                     |
+| --------------------------------------------------------------------------- |
+| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator` |
+| $cnb->setCache(`Nette\Caching\Cache $cache`)                                |
+
+### Object iterator
+
+#### Conditionals
+
+| Methods                        |
+| ------------------------------ |
+| setLimit(`$limit`)             |
+| setOffset(`$offset`)           |
+| addEqual(`$column`, `$value`)  |
+
+
+#### Methods
+
+| Methods                        |
+| ------------------------------ |
+| fetch() : `Entity`             |
+| fetchAll() : `Entity[]`        |
+
 Usage
 -----
 
@@ -17,7 +51,7 @@ Usage
 ```php
 $cnb = new CnbApi();
 $rates = $cnb->getExchangeRates();
-$rates->getList();
+$rates->fetchAll();
 ```
 
 Return: `ExchangeRate[]`
@@ -44,7 +78,7 @@ $cache = new \Nette\Caching\Cache($storage);
 $cnb = new CnbApi();
 $cnb->setCache($cache);
 $rates = $cnb->getExchangeRates();
-$list = $rates->getList();
+$list = $rates->fetchAll();
 ```
 
 Return: `ExchangeRate[]`
