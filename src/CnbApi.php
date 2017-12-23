@@ -14,24 +14,9 @@
 use CnbApi\Internal\ExchangeRateIterator;
 use CnbApi\Services\ExchangeRateService;
 use CnbApi\Internal\Helper;
-use Nette\Caching\Cache;
 
 class CnbApi
 {
-    /**
-     * @var null|Cache
-     */
-    private $cache = null;
-
-
-    /**
-     * @param Cache $cache
-     */
-    public function setCache(Cache $cache)
-    {
-        $this->cache = $cache;
-    }
-
 
     /**
      * @param DateTime|null $date
@@ -41,7 +26,7 @@ class CnbApi
     public function getExchangeRates($date = null)
     {
         $date = Helper::fixDateTime($date);
-        return ExchangeRateService::getRates($date, $this->cache);
+        return ExchangeRateService::getRates($date);
     }
 
 }

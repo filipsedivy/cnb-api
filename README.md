@@ -22,8 +22,7 @@ $cnb = new CnbApi();
 
 | Methods                                                                     |
 | --------------------------------------------------------------------------- |
-| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator` |
-| $cnb->setCache(`Nette\Caching\Cache $cache`)                                |
+| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator` |                             |
 
 ### Object iterator
 
@@ -68,17 +67,3 @@ $rates->fetch();
 ```
 
 Return: `ExchangeRate`
-
-### Usage Nette\Cache
-
-```php
-$storage = new \Nette\Caching\Storages\FileStorage(__DIR__.'/temp');
-$cache = new \Nette\Caching\Cache($storage);
-
-$cnb = new CnbApi();
-$cnb->setCache($cache);
-$rates = $cnb->getExchangeRates();
-$list = $rates->fetchAll();
-```
-
-Return: `ExchangeRate[]`
