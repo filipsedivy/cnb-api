@@ -18,7 +18,7 @@ If you want to turn on caching results, use the first parameter to set the folde
 If you leave the first parameter blank, the cache will be disabled.
 
 ```php
-$cnb = new CnbApi(string $tempDirectory = null);
+$cnb = new CnbApi\CnbApi(string $tempDirectory = null);
 ```
 
 | Methods                                                                         |
