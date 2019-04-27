@@ -26,8 +26,8 @@ $cnb = new CnbApi\CnbApi(string $tempDirectory = null);
 | $cnb->getEntity(`DateTime` $date) | `CnbApi\Entity\ExchangeRate` |
 | $cnb->findRateByCode(`string` $code, `DateTime` $date = `null`) | `CnbApi\Entity\Rate` |
 | $cnb->findRateByCountry(`string` $country, `DateTime` $date = `null`) | `CnbApi\Entity\Rate`|
-| $cnb->convertFromCzk(`string` $code, `float` $amount = 1, `DateTime` $date = null | `CnbApi\Entity\Rate`|
-| $cnb->convertToCzk(`string` $code, `float` $amount = 1, `DateTime` $date = `null` | `CnbApi\Entity\Rate`|
+| $cnb->convertFromCzk(`string` $code, `float` $amount = 1.0, `DateTime` $date = null | `CnbApi\Entity\Rate`|
+| $cnb->convertToCzk(`string` $code, `float` $amount = 1.0, `DateTime` $date = `null` | `CnbApi\Entity\Rate`|
 
 
 Usage
