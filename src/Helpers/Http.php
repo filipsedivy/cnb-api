@@ -86,11 +86,11 @@ class Http
     {
         $context = stream_context_create($this->contextOptions);
 
-        $content = file_get_contents($this->url, false, $context);
+        $content = @file_get_contents($this->url, false, $context);
 
         if ($content === false)
         {
-            throw new CoreException('Content is empty');
+            throw new CoreException(error_get_last()['message']);
         }
 
         $this->content = $content;
