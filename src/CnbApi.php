@@ -8,7 +8,6 @@ use CnbApi\Entity\ExchangeRate;
 use CnbApi\Entity\Rate;
 use CnbApi\Source;
 use CnbApi\Translator;
-use Nette\Utils\Strings;
 
 class CnbApi
 {
