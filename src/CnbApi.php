@@ -1,47 +1,108 @@
 <?php
-/**
- * This file is part of the CnbApi package.
- *
- * (c) Filip Sedivy <mail@filipsedivy.cz>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @license MIT
- * @author  Filip Sedivy <mail@filipsedivy.cz>
- */
 
-use CnbApi\Internal\ExchangeRateIterator;
-use CnbApi\Services\ExchangeRateService;
-use CnbApi\Internal\Helper;
+declare(strict_types=1);
+
+namespace CnbApi;
+
+use CnbApi\Entity\ExchangeRate;
+use CnbApi\Entity\Rate;
+use CnbApi\Source;
+use CnbApi\Translator;
+use Nette\Utils\Strings;
 
 class CnbApi
 {
+    /** @var Application */
+    private $application;
+
 
     /**
-     * @param DateTime|null $date
-     *
-     * @return ExchangeRateIterator
+     * @param string|null $tempDirectory
      */
-    public function getExchangeRates($date = null)
+    public function __construct(string $tempDirectory = null)
     {
-        $date = Helper::fixDateTime($date);
-        return ExchangeRateService::getRates($date);
+        $source = new Source\Cnb();
+        $translator = new Translator\Cnb();
+
+        $this->application = new Application($source, $translator, $tempDirectory);
     }
 
 
     /**
-     * @param string $currency_code
-     * @param null   $date
+     * @param \DateTime|null $date
      *
-     * @return \CnbApi\Entity\ExchangeRate|null|object
+     * @return ExchangeRate
+     *
+     * @throws DateTimeException
      */
-    public function getExchangeRateByCurrencyCode($currency_code, $date = null)
+    public function getEntity(\DateTime $date = null): ExchangeRate
     {
-        $currency_code = strtoupper($currency_code);
-        $rates = $this->getExchangeRates($date);
-        $rates->addEqual(ExchangeRateIterator::COLUMN_CURRENCY_CODE, $currency_code);
-        return $rates->fetch();
+        return $this->application->getEntity($date);
     }
 
+
+    /**
+     * @param string $code
+     * @param \DateTime|null $date
+     *
+     * @return Rate
+     *
+     * @throws DateTimeException
+     * @throws InvalidArgumentException
+     */
+    public function findRateByCode(string $code, \DateTime $date = null): Rate
+    {
+        return $this->application->findRateByCode($code, $date);
+    }
+
+
+    /**
+     * @param string $country
+     * @param \DateTime|null $date
+     *
+     * @return Rate
+     *
+     * @throws DateTimeException
+     * @throws InvalidArgumentException
+     */
+    public function findRateByCountry(string $country, \DateTime $date = null): Rate
+    {
+        return $this->application->findRateByCountry($country, $date);
+    }
+
+
+    /**
+     * @param string $code
+     * @param float $amount
+     * @param \DateTime|null $date
+     *
+     * @return float
+     *
+     * @throws DateTimeException
+     * @throws InvalidArgumentException
+     */
+    public function convertFromCzk(string $code, float $amount = 1, \DateTime $date = null): float
+    {
+        $rate = $this->findRateByCode($code, $date);
+
+        return $amount / $rate->getOneRateAmount();
+    }
+
+
+    /**
+     * @param string $code
+     * @param float $amount
+     * @param \DateTime|null $date
+     *
+     * @return float
+     *
+     * @throws DateTimeException
+     * @throws InvalidArgumentException
+     */
+    public function convertToCzk(string $code, float $amount = 1, \DateTime $date = null): float
+    {
+        $rate = $this->findRateByCode($code, $date);
+
+        return $amount * $rate->getOneRateAmount();
+    }
 }

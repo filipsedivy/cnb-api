@@ -7,7 +7,7 @@ Install it using Composer:
 composer require filipsedivy/cnb-api
 ```
 
-The last stable release requires PHP version 5.6 or newer (is compatible with PHP 7.0 and 7.1).
+The last stable release requires PHP version 7.1.
 
 Documentation
 -------------
@@ -15,56 +15,27 @@ Documentation
 ### Create an object
 
 ```php
-$cnb = new CnbApi();
+$cnb = new CnbApi(string $tempDirectory = null);
 ```
 
 ### CnbApi methods
 
 | Methods                                                                         |
 | ------------------------------------------------------------------------------- |
-| $cnb->getExchangeRates(`$date`) : `ExchangeRateIterator` → `ObjectIterator`     |                             |
-| $cnb->getExchangeRateByCurrencyCode(`$currency_code`, `$date`) : `ExchangeRate` |
+| $cnb->getEntity(`DateTime` $date) : `CnbApi\Entity\ExchangeRate`                  |
+| $cnb->findRateByCode(`string` $code, `DateTime` $date = `null`) : `CnbApi\Entity\Rate`|
+| $cnb->findRateByCountry(`string` $country, `DateTime` $date = `null`) : `CnbApi\Entity\Rate`|
+| $cnb->convertFromCzk(`string` $code, `float` $amount = 1, `DateTime` $date = null : `CnbApi\Entity\Rate`|
+| $cnb->convertToCzk(`string` $code, `float` $amount = 1, `DateTime` $date = `null` : `CnbApi\Entity\Rate`|
 
-### Object iterator
-
-#### Conditionals
-
-| Methods                        |
-| ------------------------------ |
-| setLimit(`$limit`)             |
-| setOffset(`$offset`)           |
-| addEqual(`$column`, `$value`)  |
-
-
-#### Methods
-
-| Methods                        |
-| ------------------------------ |
-| fetch() : `Entity`             |
-| fetchAll() : `Entity[]`        |
 
 Usage
 -----
 
-### Get all exchange rates
 
 ```php
 $cnb = new CnbApi();
-$rates = $cnb->getExchangeRates();
-$rates->fetchAll();
+$rate = $cnb->findRateByRate('EUR')
 ```
 
-Return: `ExchangeRate[]`
-
-### Usage filters
-
-Get today exchange rate for EUR
-
-```php
-$cnb = new CnbApi();
-$rates = $cnb->getExchangeRates();
-$rates->addEqual(\CnbApi\Internal\ExchangeRateIterator::COLUMN_CURRENCY_CODE, 'EUR');
-$rates->fetch();
-```
-
-Return: `ExchangeRate`
+Return: `Rate`

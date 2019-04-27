@@ -1,36 +1,23 @@
 <?php
-/**
- * This file is part of the CnbApi package.
- *
- * (c) Filip Sedivy <mail@filipsedivy.cz>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- *
- * @license MIT
- * @author  Filip Sedivy <mail@filipsedivy.cz>
- */
+
+declare(strict_types=1);
 
 namespace CnbApi\Entity;
 
 class Currency
 {
-    /**
-     * @var string
-     */
+    /** @var string */
     private $name;
 
 
-    /**
-     * @var string
-     */
+    /** @var string */
     private $code;
 
 
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -38,17 +25,21 @@ class Currency
 
     /**
      * @param string $name
+     *
+     * @return Currency
      */
-    public function setName($name)
+    public function setName(string $name): Currency
     {
         $this->name = $name;
+
+        return $this;
     }
 
 
     /**
      * @return string
      */
-    public function getCode()
+    public function getCode(): string
     {
         return $this->code;
     }
@@ -56,38 +47,13 @@ class Currency
 
     /**
      * @param string $code
+     *
+     * @return Currency
      */
-    public function setCode($code)
+    public function setCode(string $code): Currency
     {
         $this->code = $code;
-    }
 
-
-    /**
-     * @param $name
-     * @param $code
-     *
-     * @return Currency
-     */
-    public static function create($name, $code)
-    {
-        $object = new self();
-        $object->setName($name);
-        $object->setCode($code);
-        return $object;
-    }
-
-
-    /**
-     * @param array $data
-     *
-     * @return Currency
-     */
-    public static function createFromArray(array $data)
-    {
-        return self::create(
-            $data['name'],
-            $data['code']
-        );
+        return $this;
     }
 }

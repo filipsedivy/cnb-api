@@ -1,20 +1,28 @@
 {
-  "name"       : "filipsedivy/cnb-api",
+  "name": "filipsedivy/cnb-api",
   "description": "CnbApi",
-  "license"    : "MIT",
-  "authors"    : [
-    {
-      "name" : "Filip Sedivy",
-      "email": "mail@filipsedivy.cz"
-    }
+  "license": "MIT",
+  "authors": [
+	{
+	  "name": "Filip Sedivy",
+	  "email": "mail@filipsedivy.cz"
+	}
   ],
-  "autoload"   : {
-    "classmap": [
-      "src/"
-    ]
+  "autoload": {
+	"classmap": [
+	  "src/"
+	],
+	"files": [
+	  "src/exceptions.php"
+	]
   },
-  "require"    : {
-    "php"     : ">= 5.6.0",
-    "ext-curl": "*"
+  "require": {
+	"php": ">= 7.1",
+	"nette/caching": "^3.0 || ^2.5",
+	"nette/utils": "^3.0 || ^2.5",
+	"tracy/tracy": "^2.6",
+	"ext-mbstring": "*",
+	"ext-iconv": "*",
+    "phpstan/phpstan": "^0.11.5"
   }
 }
