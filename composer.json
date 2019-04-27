@@ -24,6 +24,7 @@
 	"ext-iconv": "*"
   },
   "require-dev": {
-	"phpstan/phpstan": "^0.11.5"
+	"phpstan/phpstan": "^0.11.5",
+    "nette/tester": "^2.2"
   }
 }
