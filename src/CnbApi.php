@@ -80,7 +80,7 @@ class CnbApi
      * @throws DateTimeException
      * @throws InvalidArgumentException
      */
-    public function convertFromCzk(string $code, float $amount = 1, \DateTime $date = null): float
+    public function convertFromCzk(string $code, float $amount = 1.0, \DateTime $date = null): float
     {
         $rate = $this->findRateByCode($code, $date);
 
@@ -98,7 +98,7 @@ class CnbApi
      * @throws DateTimeException
      * @throws InvalidArgumentException
      */
-    public function convertToCzk(string $code, float $amount = 1, \DateTime $date = null): float
+    public function convertToCzk(string $code, float $amount = 1.0, \DateTime $date = null): float
     {
         $rate = $this->findRateByCode($code, $date);
 
