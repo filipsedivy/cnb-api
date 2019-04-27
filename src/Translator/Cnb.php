@@ -37,7 +37,7 @@ class Cnb implements ITranslator
         list($header, $day, $month, $year, $index) = $matches;
 
         $date = new \DateTime();
-        $date->setDate($year, $month, $day);
+        $date->setDate((int)$year, (int)$month, (int)$day);
         $date->setTime(0, 0);
 
         $entity = new ExchangeRate();
