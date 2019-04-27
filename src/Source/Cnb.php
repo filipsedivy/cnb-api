@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CnbApi\Source;
 
+use CnbApi\CoreException;
 use CnbApi\DateTimeException;
 use CnbApi\Helpers\Http;
 
@@ -18,6 +19,7 @@ class Cnb implements ISource
      * @return string
      *
      * @throws DateTimeException
+     * @throws CoreException
      */
     public function getByDate(\DateTime $dateTime): string
     {
