@@ -1,6 +1,8 @@
 CnbApi
 ======
 
+[![Build Status](https://travis-ci.org/filipsedivy/CnbApi.svg?branch=master)](https://travis-ci.org/filipsedivy/CnbApi)
+
 Install it using Composer:
 
 ```
