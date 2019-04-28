@@ -16,8 +16,10 @@ composer require filipsedivy/cnb-api
 
 The last stable release requires PHP version 7.1.
 
-Documentation
--------------
+Usage
+-----
+
+### Create instance of class
 
 If you leave the first parameter blank, the cache will be disabled.
 
@@ -25,11 +27,6 @@ If you leave the first parameter blank, the cache will be disabled.
 $cnb = new CnbApi\CnbApi(string $tempDirectory = null);
 ```
 
-
-Usage
------
-
-### Create instance of class
 
 If you want to turn on caching results, use the first parameter to set the folder to temp folder.
 
