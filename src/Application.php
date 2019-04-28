@@ -30,6 +30,8 @@ class Application
      * @param ISource $source
      * @param ITranslator $translator
      * @param string|null $tempDirectory
+     *
+     * @throws CoreException
      */
     public function __construct(ISource $source, ITranslator $translator, string $tempDirectory = null)
     {
@@ -38,7 +40,14 @@ class Application
 
         if ($tempDirectory !== null)
         {
-            $this->storage = new FileStorage($tempDirectory);
+            if (class_exists('Nette\Caching\Storages\FileStorage'))
+            {
+                $this->storage = new FileStorage($tempDirectory);
+            }
+            else
+            {
+                throw new CoreException('If you want to use the cache, you must have the nette/caching package installed. Type `composer require nette/caching` in the console');
+            }
         }
     }
 
