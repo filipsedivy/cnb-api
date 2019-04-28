@@ -2,6 +2,8 @@ CnbApi
 ======
 
 [![Build Status](https://travis-ci.org/filipsedivy/CnbApi.svg?branch=master)](https://travis-ci.org/filipsedivy/CnbApi)
+[![Latest Stable Version](https://poser.pugx.org/filipsedivy/cnb-api/v/stable)](https://packagist.org/packages/filipsedivy/cnb-api)
+[![Total Downloads](https://poser.pugx.org/filipsedivy/cnb-api/downloads)](https://packagist.org/packages/filipsedivy/cnb-api)
 
 Install it using Composer:
 
