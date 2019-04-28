@@ -4,6 +4,9 @@ CnbApi
 [![Build Status](https://travis-ci.org/filipsedivy/CnbApi.svg?branch=master)](https://travis-ci.org/filipsedivy/CnbApi)
 [![Latest Stable Version](https://poser.pugx.org/filipsedivy/cnb-api/v/stable)](https://packagist.org/packages/filipsedivy/cnb-api)
 [![Total Downloads](https://poser.pugx.org/filipsedivy/cnb-api/downloads)](https://packagist.org/packages/filipsedivy/cnb-api)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/filipsedivy/cnbapi.svg)
+![GitHub last commit](https://img.shields.io/github/last-commit/filipsedivy/cnbapi.svg)
+[![Donate](https://img.shields.io/badge/donate-10%24-green.svg)](https://www.paypal.me/filipsedivy/10USD)
 
 Install it using Composer:
 
