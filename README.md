@@ -61,7 +61,7 @@ The method returns an object `CnbApi\Entity\ExchangeRate`
 Select by exchange rate code
 
 ```php
-$cnb->findRateByRate('EUR');
+$cnb->findRateByCode('EUR');
 ```
 
 Select by country name
@@ -75,7 +75,7 @@ These selections always return the object `CnbApi\Entity\Rate`
 If you specify the DateTime object as the second parameter, the date will be listed with the date set. Time is ignored.
 
 ```php
-$cnb->findRateByRate('EUR', new \DateTime('2019-01-01'));
+$cnb->findRateByCode('EUR', new \DateTime('2019-01-01'));
 ```
 
 ### Currency conversion between Czech crown
