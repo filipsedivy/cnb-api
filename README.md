@@ -1,101 +1,39 @@
-CnbApi
-======
+<h1 align=center>Client for CNB exchange rates</h1>
 
-[![Build Status](https://travis-ci.org/filipsedivy/CnbApi.svg?branch=master)](https://travis-ci.org/filipsedivy/CnbApi)
-[![Latest Stable Version](https://poser.pugx.org/filipsedivy/cnb-api/v/stable)](https://packagist.org/packages/filipsedivy/cnb-api)
-[![Total Downloads](https://poser.pugx.org/filipsedivy/cnb-api/downloads)](https://packagist.org/packages/filipsedivy/cnb-api)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/filipsedivy/cnbapi.svg)
-![GitHub last commit](https://img.shields.io/github/last-commit/filipsedivy/cnbapi.svg)
-[![Donate](https://img.shields.io/badge/donate-10%24-green.svg)](https://www.paypal.me/filipsedivy/10USD)
+<p align=center>
+Powerful & effective ⚡️ PHP library for CNB exchange rates
+</p>
 
-Install it using Composer:
+<p align=center>
+Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 <a href="https://twitter.com/filipsedivy">@filipsedivy</a>
+</p>
 
-```
+<p align="center">
+  <a href="https://travis-ci.org/filipsedivy/cnb-api"><img src="https://img.shields.io/travis/filipsedivy/cnb-api.svg?style=flat-square"></a>
+  <a href="https://coveralls.io/r/filipsedivy/cnb-api"><img src="https://img.shields.io/coveralls/filipsedivy/cnb-api.svg?style=flat-square"></a>
+  <a href="https://packagist.org/packages/filipsedivy/cnb-api"><img src="https://poser.pugx.org/filipsedivy/cnb-api/d/monthly?format=flat-square"></a>
+  <a href="https://packagist.org/packages/filipsedivy/cnb-api"><img src="https://poser.pugx.org/filipsedivy/cnb-api/d/total?format=flat-square"></a>
+  <a href="https://github.com/filipsedivy/cnb-api/releases"><img src="https://poser.pugx.org/filipsedivy/cnb-api/v/stable?format=flat-square"></a>
+</p>
+
+-----
+
+## Usage
+
+To install latest version of `filipsedivy/cnb-api` use [Composer](https://getcomposer.com).
+
+```bash
 composer require filipsedivy/cnb-api
 ```
 
-The last stable release requires PHP version 7.1.
+## Documentation
 
-Usage
+For detailed instructions on how to use the library, visit the [documentation](.docs/README.md).
+
+## Contributing
+
+This library is an Open Source, community-driven project. You can help develop code or create documentation.
+
 -----
 
-### Create instance of class
-
-If you leave the first parameter blank, the cache will be disabled.
-
-```php
-$cnb = new CnbApi\CnbApi(string $tempDirectory = null);
-```
-
-
-If you want to turn on caching results, use the first parameter to set the folder to temp folder.
-
-```php
-$cnb = new CnbApi\CnbApi(__DIR__ . '/temp');
-```
-
-To use the cache, you must have the [nette/caching](https://packagist.org/packages/nette/caching) package installed, which is not part of the mandatory packages.
-
-**The folder must exist, otherwise the application will end with an exception.**
-
-If you do not want to cach the result, you do not need to specify the first parameter.
-
-```php
-$cnb = new CnbApi\CnbApi();
-```
-
-### Exchange rate list selection
-
-To select the entire exchange rate list, there is a method that returns the complete data from the Czech National Bank.
-
-```php
-$cnb->getEntity();
-```
-
-The **first parameter is the date of the exchange rate list** . If the date is not specified, the exchange rate list is selected at the current date.
-
-The method returns an object `CnbApi\Entity\ExchangeRate`
-
-### Select one currency
-
-Select by exchange rate code
-
-```php
-$cnb->findRateByCode('EUR');
-```
-
-Select by country name
-
-```php
-$cnb->findRateByCountry('Mexiko');
-```
-
-These selections always return the object `CnbApi\Entity\Rate`
-
-If you specify the DateTime object as the second parameter, the date will be listed with the date set. Time is ignored.
-
-```php
-$cnb->findRateByCode('EUR', new \DateTime('2019-01-01'));
-```
-
-### Currency conversion between Czech crown
-
-Ancillary methods are available that allow the transfer between the Czech crown and the country's target name or the country's destination code.
-
-```php
-$cnb->convertFromCzk('EUR', 5.0);
-```
-
-```php
-$cnb->convertToCzk('EUR', 5.0);
-```
-
-Methods return object `CnbApi\Entity\Rate`
-
-### Helper classes
-
-In class `CnbApi\Helpers\Currency` are maintained most widely used currency.
-
-```php
-$cnb->findRateByCode(\CnbApi\Helpers\Currency::EURO)
-```
+If the library is useful, **[please make a donation now](https://filipsedivy.cz/donation?to=cnb-api)**. Thank you!
