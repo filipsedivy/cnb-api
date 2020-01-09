@@ -1,6 +1,6 @@
 {
 	"name": "filipsedivy/cnb-api",
-	"description": "\uD83D\uDCB8 Powerful PHP library for CNB exchange rates",
+	"description": "💸 Powerful PHP library for CNB exchange rates",
 	"homepage": "https://github.com/filipsedivy/cnb-api",
 	"license": [
 		"MIT"
