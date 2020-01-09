@@ -32,7 +32,7 @@ For detailed instructions on how to use the library, visit the [documentation](.
 
 ## Contributing
 
-PHP-EET is an Open Source, community-driven project. You can help develop code or create documentation.
+This library is an Open Source, community-driven project. You can help develop code or create documentation.
 
 -----
 
