@@ -1,7 +1,12 @@
 {
 	"name": "filipsedivy/cnb-api",
 	"description": "\uD83D\uDCB8 Powerful PHP library for CNB exchange rates",
-	"license": "MIT",
+	"homepage": "https://github.com/filipsedivy/cnb-api",
+	"license": [
+		"MIT"
+	],
+	"keywords": [],
+	"type": "library",
 	"authors": [
 		{
 			"name": "Filip Sedivy",
@@ -22,17 +27,31 @@
 		"ext-mbstring": "*",
 		"ext-iconv": "*"
 	},
+	"require-dev": {
+		"ninjify/nunjuck": "^0.2",
+		"phpstan/phpstan": "^0.8",
+		"slevomat/coding-standard": "^5.0",
+		"squizlabs/php_codesniffer": "^3.4",
+		"nette/caching": "^2.5 || ^3.0"
+	},
 	"suggest": {
 		"nette/caching": "Use if you want to retrieve data repeatedly"
-	},
-	"require-dev": {
-		"phpstan/phpstan": "^0.11.5",
-		"nette/tester": "^2.2",
-		"nette/caching": "^2.5 || ^3.0"
 	},
 	"extra": {
 		"branch-alias": {
 			"dev-master": "2.0-dev"
 		}
+	},
+	"scripts": {
+		"full": [
+			"@cs",
+			"@phpstan",
+			"@tester"
+		],
+		"phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
+		"cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases",
+		"cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
+		"tester": "nunjuck -s -c ./tests/php.ini ./tests",
+		"coverage": "nunjuck -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src"
 	}
 }
