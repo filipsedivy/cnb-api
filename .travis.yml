@@ -11,6 +11,9 @@ env:
     - PHP_BIN=php-cgi
 
 before_script:
+    # Prefer IPv4 and use Cloudflare DNS by default, otherwise build could fail with timeouts.
+    # https://getcomposer.org/doc/articles/troubleshooting.md#operation-timed-out-ipv6-issues-
+    - sudo sh -c "echo 'precedence ::ffff:0:0/96 100' >> /etc/gai.conf" && sudo printf "nameserver 1.0.0.1\nnameserver 1.1.0.0\n" /etc/resolvconf/resolv.conf.d/base && sudo resolvconf -u
     - phpenv config-rm xdebug.ini || return 0
     - travis_retry composer self-update
 
