@@ -2,49 +2,53 @@
 
 namespace CnbApi\Entity;
 
+use DateTime;
+
 class ExchangeRate
 {
-    /** @var \DateTime */
+    /** @var DateTime */
     private $date;
 
-    /** @var Rate[] */
+    /** @var int */
+    private $serialNumber;
+
+    /** @var array<Rate> */
     private $rates = [];
 
-
-    /**
-     * @return \DateTime
-     */
-    public function getDate(): \DateTime
+    public function getDate(): DateTime
     {
         return $this->date;
     }
 
-
-    /**
-     * @param \DateTime $date
-     *
-     * @return ExchangeRate
-     */
-    public function setDate(\DateTime $date): ExchangeRate
+    public function setDate(DateTime $date): ExchangeRate
     {
         $this->date = $date;
 
         return $this;
     }
 
+    public function getSerialNumber(): int
+    {
+        return $this->serialNumber;
+    }
+
+    public function setSerialNumber(int $serialNumber): ExchangeRate
+    {
+        $this->serialNumber = $serialNumber;
+
+        return $this;
+    }
 
     /**
-     * @return Rate[]
+     * @return array<Rate>
      */
     public function getRates(): array
     {
         return $this->rates;
     }
 
-
     /**
-     * @param array $rates
-     *
+     * @param array<Rate> $rates
      * @return ExchangeRate
      */
     public function setRates(array $rates): ExchangeRate
@@ -54,12 +58,6 @@ class ExchangeRate
         return $this;
     }
 
-
-    /**
-     * @param Rate $rate
-     *
-     * @return ExchangeRate
-     */
     public function addRate(Rate $rate): ExchangeRate
     {
         $this->rates[] = $rate;
