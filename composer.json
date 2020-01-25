@@ -16,9 +16,6 @@
 	"autoload": {
 		"classmap": [
 			"src/"
-		],
-		"files": [
-			"src/exceptions.php"
 		]
 	},
 	"require": {
