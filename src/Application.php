@@ -2,176 +2,72 @@
 
 namespace CnbApi;
 
-use CnbApi\Entity\ExchangeRate;
-use CnbApi\Entity\Rate;
-use CnbApi\Source\ISource;
-use CnbApi\Translator\ITranslator;
-use Nette\Caching\Cache;
-use Nette\Caching\Storages\FileStorage;
-use Nette\Utils\Strings;
+use CnbApi\Entity;
+use CnbApi\Exceptions;
+use CnbApi\Source;
+use CnbApi\Utils;
+use DateTimeInterface;
 
 class Application
 {
-    /** @var ISource */
+    /** @var Source\ISource */
     private $source;
 
-
-    /** @var ITranslator */
-    private $translator;
-
-
-    /** @var FileStorage|null */
-    private $storage;
-
-
-    /**
-     * @param ISource $source
-     * @param ITranslator $translator
-     * @param string|null $tempDirectory
-     *
-     * @throws CoreException
-     */
-    public function __construct(ISource $source, ITranslator $translator, string $tempDirectory = null)
+    public function __construct(Source\ISource $source)
     {
         $this->source = $source;
-        $this->translator = $translator;
-
-        if ($tempDirectory !== null)
-        {
-            if (class_exists('Nette\Caching\Storages\FileStorage'))
-            {
-                $this->storage = new FileStorage($tempDirectory);
-            }
-            else
-            {
-                throw new CoreException('If you want to use the cache, you must have the nette/caching package installed. Type `composer require nette/caching` in the console');
-            }
-        }
     }
 
-
-    /**
-     * @param \DateTime|null $date
-     *
-     * @return ExchangeRate
-     *
-     * @throws DateTimeException
-     */
-    public function getEntity(\DateTime $date = null)
+    public function getEntity(?DateTimeInterface $date = null): Entity\ExchangeRate
     {
-        if ($date === null)
-        {
-            try
-            {
-                $date = new \DateTime('now');
-            }
-            catch (\Exception $e)
-            {
-                throw new DateTimeException($e->getMessage(), $e->getCode(), $e->getPrevious());
-            }
+        if ($date === null) {
+            $date = new Utils\DateTime('now');
         }
 
-        $content = $this->source->getByDate($date);
-        $this->translator->setContent($content);
+        $content = $this->getSource()->getByDate($date);
+        $this->getSource()->getTranslator()->setContent($content);
 
         return $this->loadEntity($date);
     }
 
-
-    /**
-     * @param string $country
-     * @param \DateTime|null $date
-     *
-     * @return Rate
-     *
-     * @throws InvalidArgumentException
-     * @throws DateTimeException
-     */
-    public function findRateByCountry(string $country, \DateTime $date = null): Rate
+    public function findRateByCountry(string $country, ?DateTimeInterface $date = null): Entity\Rate
     {
         $entity = $this->getEntity($date);
         $rates = $entity->getRates();
-        $country = Strings::upper($country);
+        $country = Utils\Strings::toUpper($country);
 
-        foreach ($rates as $rate)
-        {
-            if (Strings::upper($rate->getCountry()->getName()) === $country)
-            {
+        foreach ($rates as $rate) {
+            if (Utils\Strings::toUpper($rate->getCountry()->getName()) === $country) {
                 return $rate;
             }
         }
 
-        throw new InvalidArgumentException("Country '$country' not found");
+        throw new Exceptions\InvalidArgumentException("Country '$country' not found");
     }
 
-
-    /**
-     * @param string $code
-     * @param \DateTime|null $date
-     *
-     * @return Rate
-     *
-     * @throws InvalidArgumentException
-     * @throws DateTimeException
-     */
-    public function findRateByCode(string $code, \DateTime $date = null): Rate
+    public function findRateByCode(string $code, ?DateTimeInterface $date = null): Entity\Rate
     {
         $entity = $this->getEntity($date);
         $rates = $entity->getRates();
 
-        foreach ($rates as $rate)
-        {
-            if ($rate->getCurrency()->getCode() === Strings::upper($code))
-            {
+        foreach ($rates as $rate) {
+            if ($rate->getCurrency()->getCode() === Utils\Strings::toUpper($code)) {
                 return $rate;
             }
         }
 
-        throw new InvalidArgumentException("Code '$code' not found");
+        throw new Exceptions\InvalidArgumentException("Code '$code' not found");
     }
 
-
-    /**
-     * @param \DateTime $date
-     *
-     * @return ExchangeRate
-     */
-    private function loadEntity(\DateTime $date)
+    public function getSource(): Source\ISource
     {
-        if ($this->storage instanceof FileStorage)
-        {
-            $cacheKey = $date->format('Y-m-d');
+        return $this->source;
+    }
 
-            $cache = new Cache($this->storage, 'CnbApi.Entity');
+    private function loadEntity(DateTimeInterface $date): Entity\ExchangeRate
+    {
+        $this->getSource()->getTranslator()->setContent($this->getSource()->getByDate($date));
 
-            $content = $cache->load($cacheKey, function () use ($date) {
-                return [
-                    'class' => [
-                        'source'     => get_class($this->source),
-                        'translator' => get_class($this->translator),
-                    ],
-                    'data'  => $this->source->getByDate($date),
-                ];
-            });
-
-            if ($content['class']['source'] !== get_class($this->source))
-            {
-                $this->source = new $content['class']['source'];
-            }
-
-
-            if ($content['class']['translator'] !== get_class($this->translator))
-            {
-                $this->translator = $content['class']['translator'];
-            }
-
-            $this->translator->setContent($content['data']);
-        }
-        else
-        {
-            $this->translator->setContent($this->source->getByDate($date));
-        }
-
-        return $this->translator->getEntity();
+        return $this->getSource()->getTranslator()->getEntity();
     }
 }
