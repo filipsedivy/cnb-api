@@ -28,13 +28,6 @@ after_failure:
 
 jobs:
     include:
-        -   name: Lowest Dependencies
-            env: PHP_BIN=php
-            php: 7.2
-            install:
-                - travis_retry composer update --no-progress --prefer-dist --prefer-lowest --prefer-stable
-
-
         -   stage: Code Sniffer
             php: 7.3
             script:
