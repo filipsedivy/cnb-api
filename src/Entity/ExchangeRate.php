@@ -2,41 +2,34 @@
 
 namespace CnbApi\Entity;
 
-use DateTime;
+use DateTimeInterface;
 
 class ExchangeRate
 {
-    /** @var DateTime */
+    /** @var DateTimeInterface */
     private $date;
 
     /** @var int */
     private $serialNumber;
 
     /** @var array<Rate> */
-    private $rates = [];
+    private $rates;
 
-    public function getDate(): DateTime
-    {
-        return $this->date;
-    }
-
-    public function setDate(DateTime $date): ExchangeRate
+    public function __construct(DateTimeInterface $date, int $serialNumber, array $rates)
     {
         $this->date = $date;
+        $this->serialNumber = $serialNumber;
+        $this->rates = $rates;
+    }
 
-        return $this;
+    public function getDate(): DateTimeInterface
+    {
+        return $this->date;
     }
 
     public function getSerialNumber(): int
     {
         return $this->serialNumber;
-    }
-
-    public function setSerialNumber(int $serialNumber): ExchangeRate
-    {
-        $this->serialNumber = $serialNumber;
-
-        return $this;
     }
 
     /**
@@ -47,21 +40,8 @@ class ExchangeRate
         return $this->rates;
     }
 
-    /**
-     * @param array<Rate> $rates
-     * @return ExchangeRate
-     */
-    public function setRates(array $rates): ExchangeRate
-    {
-        $this->rates = $rates;
-
-        return $this;
-    }
-
-    public function addRate(Rate $rate): ExchangeRate
+    public function addRate(Rate $rate): void
     {
         $this->rates[] = $rate;
-
-        return $this;
     }
 }

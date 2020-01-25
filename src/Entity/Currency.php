@@ -10,27 +10,19 @@ class Currency
     /** @var string */
     private $code;
 
+    public function __construct(string $name, string $code)
+    {
+        $this->name = $name;
+        $this->code = $code;
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(string $name): Currency
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getCode(): string
     {
         return $this->code;
-    }
-
-    public function setCode(string $code): Currency
-    {
-        $this->code = $code;
-
-        return $this;
     }
 }
