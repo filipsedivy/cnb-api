@@ -2,14 +2,14 @@
 
 namespace CnbApi\Source;
 
-use DateTime;
+use CnbApi\Translator;
+use DateTimeInterface;
 
 interface ISource
 {
-    /**
-     * @param DateTime $dateTime
-     *
-     * @return string
-     */
-    public function getByDate(DateTime $dateTime): string;
+    public function getByDate(DateTimeInterface $dateTime): string;
+
+    public function getBaseUrl(): string;
+
+    public function getTranslator(): Translator\ITranslator;
 }
