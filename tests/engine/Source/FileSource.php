@@ -13,7 +13,7 @@ class FileSource implements CnbApi\Source\ISource
     public function getByDate(DateTimeInterface $dateTime): string
     {
         // [PHPStan] Fix unused parameter
-        $dateTime->format(DateTimeInterface::ATOM);
+        $dateTime->format('c');
 
         return file_get_contents($this->getBaseUrl());
     }
