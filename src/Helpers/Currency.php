@@ -36,5 +36,6 @@ class Currency
         BAHT = 'THB',
         LIRA = 'TRY',
         DOLAR = 'USD',
-        LIBRA = 'GBP';
+        LIBRA = 'GBP',
+        CESKA_KORUNA = 'CZK';
 }
