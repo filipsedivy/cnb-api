@@ -1,10 +1,8 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 namespace CnbApi\Helpers;
 
-use CnbApi\CoreException;
+use CnbApi\Exceptions;
 
 class Http
 {
@@ -14,92 +12,46 @@ class Http
     /** @var string */
     private $content;
 
-    /** @var array */
-    private $contextOptions = [];
+    /** @var ContextOptions */
+    private $contextOptions;
 
+    public static function createWithDefaultContextOptions(string $url): self
+    {
+        return new self($url, static function (ContextOptions $contextOptions) {
+            $contextOptions->add('http', 'timeout', '10');
+        });
+    }
 
-    /**
-     * @param string $url
-     * @param bool $defaultContextOptions
-     */
-    public function __construct(string $url, bool $defaultContextOptions = true)
+    public function __construct(string $url, ?callable $contextOptionsCallback = null)
     {
         $this->url = $url;
 
-        if ($defaultContextOptions)
-        {
-            $this->setDefaultContextOptions();
+        $contextOptions = new ContextOptions;
+
+        if ($contextOptionsCallback !== null) {
+            $contextOptionsCallback($contextOptions);
         }
+
+        $this->contextOptions = $contextOptions;
     }
 
-
-    /**
-     * @param string $url
-     *
-     * @return $this
-     */
-    public function setUrl(string $url): Http
-    {
-        $this->url = $url;
-
-        return $this;
-    }
-
-
-    /**
-     * @param string $group
-     * @param string $name
-     * @param string $value
-     *
-     * @return Http
-     */
-    public function addContextOptions(string $group, string $name, string $value): Http
-    {
-        $this->contextOptions[$group][$name] = $value;
-
-        return $this;
-    }
-
-
-    /**
-     * @return string
-     *
-     * @throws CoreException
-     */
     public function getContent(): string
     {
-        if ($this->content === null)
-        {
-            $this->loadContent();
-        }
+        $this->content === null && $this->loadContent();
 
         return $this->content;
     }
 
-
-    /**
-     * @return void
-     *
-     * @throws CoreException
-     */
     private function loadContent(): void
     {
-        $context = stream_context_create($this->contextOptions);
+        $context = stream_context_create($this->contextOptions->toArray());
 
         $content = @file_get_contents($this->url, false, $context);
 
-        if ($content === false)
-        {
-            throw new CoreException(error_get_last()['message']);
+        if ($content === false) {
+            throw new Exceptions\CoreException(error_get_last()['message']);
         }
 
         $this->content = $content;
-    }
-
-
-    private function setDefaultContextOptions(): void
-    {
-        // Set timout to 10 seconds
-        $this->addContextOptions('http', 'timeout', '10');
     }
 }
