@@ -5,6 +5,7 @@ namespace Tests\Cases;
 use CnbApi;
 use Tester\Assert;
 use Tester\TestCase;
+use Tests\Engine;
 
 require_once __DIR__ . '/../bootstrap.php';
 
@@ -14,7 +15,7 @@ class ApplicationTest extends TestCase
 
     public function __construct()
     {
-        $source = new CnbApi\Source\CnbSource;
+        $source = new Engine\Source\FileSource;
 
         $this->application = new CnbApi\Application($source);
     }
