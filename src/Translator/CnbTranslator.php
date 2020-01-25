@@ -10,17 +10,27 @@ use DateTime;
 
 class CnbTranslator implements ITranslator
 {
-    /** @var string */
+    /** @var string|null */
     private $content;
 
     /** @var ExchangeRate */
     private $entity;
 
-    public function setContent(string $content): ITranslator
+    public function setContent(?string $content): ITranslator
     {
         $this->content = $content;
 
         return $this;
+    }
+
+    public function getContent(): ?string
+    {
+        return $this->content;
+    }
+
+    public function isContentEmpty(): bool
+    {
+        return $this->content === '' || $this->content === null;
     }
 
     public function getEntity(): ExchangeRate
