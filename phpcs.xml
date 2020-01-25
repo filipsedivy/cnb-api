@@ -23,6 +23,7 @@
             <property name="rootNamespaces" type="array" value="
 				src=>CnbApi,
 				tests/cases=>Tests\Cases,
+				tests/engine=>Tests\Engine
 			"/>
         </properties>
     </rule>
