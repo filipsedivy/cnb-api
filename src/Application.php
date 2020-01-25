@@ -27,7 +27,7 @@ class Application
         $content = $this->getSource()->getByDate($date);
         $this->getSource()->getTranslator()->setContent($content);
 
-        return $this->loadEntity($date);
+        return $this->getSource()->getTranslator()->getEntity();
     }
 
     public function findRateByCountry(string $country, ?DateTimeInterface $date = null): Entity\Rate
@@ -62,12 +62,5 @@ class Application
     public function getSource(): Source\ISource
     {
         return $this->source;
-    }
-
-    private function loadEntity(DateTimeInterface $date): Entity\ExchangeRate
-    {
-        $this->getSource()->getTranslator()->setContent($this->getSource()->getByDate($date));
-
-        return $this->getSource()->getTranslator()->getEntity();
     }
 }
