@@ -8,8 +8,6 @@ use DateTimeInterface;
 
 class FileSource implements CnbApi\Source\ISource
 {
-    private $translator;
-
     public function getByDate(DateTimeInterface $dateTime): string
     {
         // [PHPStan] Fix unused parameter
@@ -23,12 +21,8 @@ class FileSource implements CnbApi\Source\ISource
         return DATA_DIR . '/denni_kurz.txt';
     }
 
-    public function getTranslator(): Translator\ITranslator
+    public function getTranslator(): string
     {
-        if (!$this->translator instanceof Translator\ITranslator) {
-            $this->translator = new Translator\CnbTranslator;
-        }
-
-        return $this->translator;
+        return Translator\CnbTranslator::class;
     }
 }
