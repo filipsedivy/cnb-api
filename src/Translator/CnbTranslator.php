@@ -32,7 +32,7 @@ class CnbTranslator implements ITranslator
 
     public function isContentEmpty(): bool
     {
-        return $this->content === '' || $this->content === null;
+        return $this->getContent() === '' || $this->getContent() === null;
     }
 
     public function getEntity(): ExchangeRate
