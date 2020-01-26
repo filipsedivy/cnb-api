@@ -22,9 +22,9 @@ class CnbSource implements ISource
         return 'https://www.cnb.cz/cs/financni-trhy/devizovy-trh/kurzy-devizoveho-trhu/kurzy-devizoveho-trhu/denni_kurz.txt';
     }
 
-    public function getTranslator(): Translator\ITranslator
+    public function getTranslator(): string
     {
-        return new Translator\CnbTranslator;
+        return Translator\CnbTranslator::class;
     }
 
     private function createUrl(DateTimeInterface $dateTime): string

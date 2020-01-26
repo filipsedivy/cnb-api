@@ -2,7 +2,6 @@
 
 namespace CnbApi\Source;
 
-use CnbApi\Translator;
 use DateTimeInterface;
 
 interface ISource
@@ -11,5 +10,5 @@ interface ISource
 
     public function getBaseUrl(): string;
 
-    public function getTranslator(): Translator\ITranslator;
+    public function getTranslator(): string;
 }
