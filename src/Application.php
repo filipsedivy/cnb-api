@@ -2,6 +2,7 @@
 
 namespace CnbApi;
 
+use CnbApi\Caching;
 use CnbApi\Entity;
 use CnbApi\Exceptions;
 use CnbApi\Source;
@@ -13,9 +14,13 @@ class Application
     /** @var Source\ISource */
     private $source;
 
-    public function __construct(Source\ISource $source)
+    /** @var Caching\ICaching */
+    private $caching;
+
+    public function __construct(Source\ISource $source, Caching\ICaching $caching)
     {
         $this->source = $source;
+        $this->caching = $caching;
     }
 
     public function findRateByCountry(string $country, ?DateTimeInterface $date = null): Entity\Rate
@@ -51,12 +56,20 @@ class Application
     {
         $date === null && $date = Utils\DateTime::now();
 
-        $className = $this->getSource()->getTranslator();
+        $entity = $this->caching->load($date);
 
-        /** @var Translator\ITranslator $translator */
-        $translator = new $className($this->getSource()->getByDate($date));
+        if ($entity === null) {
+            $className = $this->getSource()->getTranslator();
 
-        return $translator->getEntity();
+            /** @var Translator\ITranslator $translator */
+            $translator = new $className($this->getSource()->getByDate($date));
+
+            $entity = $translator->getEntity();
+
+            $this->caching->save($date, $entity);
+        }
+
+        return $entity;
     }
 
     public function getSource(): Source\ISource

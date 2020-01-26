@@ -2,6 +2,8 @@
 
 namespace CnbApi;
 
+use CnbApi\Caching\ICaching;
+use CnbApi\Caching\NullCaching;
 use CnbApi\Entity;
 use DateTime;
 
@@ -10,11 +12,12 @@ class Client
     /** @var Application */
     private $application;
 
-    public function __construct(?Source\ISource $source = null)
+    public function __construct(?Source\ISource $source = null, ?ICaching $caching = null)
     {
         $source = $source ?? new Source\CnbSource;
+        $caching = $caching ?? new NullCaching;
 
-        $this->application = new Application($source);
+        $this->application = new Application($source, $caching);
     }
 
     public function getEntity(?DateTime $date = null): Entity\ExchangeRate
