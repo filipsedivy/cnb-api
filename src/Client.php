@@ -12,7 +12,7 @@ class Client
     /** @var Application */
     private $application;
 
-    public function __construct(?Source\ISource $source = null, ?ICaching $caching = null)
+    public function __construct(?ICaching $caching = null, ?Source\ISource $source = null)
     {
         $source = $source ?? new Source\CnbSource;
         $caching = $caching ?? new NullCaching;
