@@ -18,11 +18,11 @@ Contact 🚀 <a href="https://filipsedivy.cz">filipsedivy.cz</a> | Twitter 🐦 
 
 
 <p align="center">
-<b>💾 There are official implementations of cache systems</b>
+<b>💾 There are official cache extensions</b>
 </p>
 
 <p align="center">
-    <a href="https://github.com/filipsedivy/cnb-api-nette-caching"><img src="https://img.shields.io/static/v1?label=Nette%20Caching&message=filipsedivy%2Fcnb-api-nette-caching&color=16a085&style=flat-square&cacheSeconds=3600"></a>
+    <a href="https://github.com/filipsedivy/cnb-api-nette-caching">Nette/Caching</a>
 </p>
 
 -----
