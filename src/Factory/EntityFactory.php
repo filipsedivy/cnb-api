@@ -18,7 +18,11 @@ class EntityFactory
             $dateTime = Utils\DateTime::now();
         }
 
-        if ($this->lastExchangeRate instanceof Entity\ExchangeRate && $dateTime->format('Y-m-d') === $this->lastExchangeRate->getDate()->format('Y-m-d')) {
+        $isLastExchangeRate =
+            $this->lastExchangeRate instanceof Entity\ExchangeRate &&
+            $dateTime->format('Y-m-d') === $this->lastExchangeRate->getDate()->format('Y-m-d');
+
+        if ($isLastExchangeRate) {
             return $this->lastExchangeRate;
         }
 
