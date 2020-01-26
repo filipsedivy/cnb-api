@@ -7,7 +7,7 @@ use DateTimeInterface;
 
 interface ICaching
 {
-    public function load(DateTimeInterface $dateTime): Entity\ExchangeRate;
+    public function load(DateTimeInterface $dateTime): ?Entity\ExchangeRate;
 
     public function save(DateTimeInterface $dateTime): void;
 }
