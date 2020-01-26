@@ -16,8 +16,9 @@ class ApplicationTest extends TestCase
     public function __construct()
     {
         $source = new Engine\Source\FileSource;
+        $cache = new CnbApi\Caching\NullCaching;
 
-        $this->application = new CnbApi\Application($source);
+        $this->application = new CnbApi\Application($source, $cache);
     }
 
     public function testGetEntity(): void
