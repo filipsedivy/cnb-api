@@ -15,7 +15,7 @@ class ExchangeRate
     /** @var array<Rate> */
     private $rates;
 
-    public function __construct(DateTimeInterface $date, int $serialNumber, array $rates)
+    public function __construct(DateTimeInterface $date, int $serialNumber, array $rates = [])
     {
         $this->date = $date;
         $this->serialNumber = $serialNumber;

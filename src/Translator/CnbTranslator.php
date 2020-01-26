@@ -50,25 +50,18 @@ class CnbTranslator implements ITranslator
 
         [, $date, $serialNumber] = $matches;
 
-        $entity = new ExchangeRate;
-        $entity->setDate(DateTime::createFromFormat('d.m.Y', $date)->setTime(0, 0, 0));
-        $entity->setSerialNumber((int)$serialNumber);
+        $dateTime = DateTime::createFromFormat('d.m.Y', $date)->setTime(0, 0, 0);
+        $entity = new ExchangeRate($dateTime, (int)$serialNumber);
 
         foreach (array_slice($lines, 2) as $line) {
             [$country, $currency, $amount, $code, $rate] = array_map('trim', explode('|', $line));
 
-            $countryEntity = new Country;
-            $countryEntity->setName($country);
+            $countryEntity = new Country($country);
+            $currencyEntity = new Currency($currency, $code);
 
-            $currencyEntity = new Currency;
-            $currencyEntity->setName($currency);
-            $currencyEntity->setCode($code);
-
-            $rateEntity = new Rate;
-            $rateEntity->setCountry($countryEntity);
-            $rateEntity->setCurrency($currencyEntity);
-            $rateEntity->setAmount((int)$amount);
-            $rateEntity->setRate((float)str_replace(',', '.', $rate));
+            $amountValue = (int)$amount;
+            $floatValue = (float)str_replace(',', '.', $rate);
+            $rateEntity = new Rate($countryEntity, $currencyEntity, $amountValue, $floatValue);
 
             $entity->addRate($rateEntity);
         }
