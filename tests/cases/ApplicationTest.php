@@ -33,6 +33,15 @@ class ApplicationTest extends TestCase
             $this->application->findRateByCountry('NotExists');
         }, CnbApi\Exceptions\InvalidArgumentException::class, "Country 'NOTEXISTS' not found");
     }
+
+    public function testRateByCode(): void
+    {
+        Assert::type(CnbApi\Entity\Rate::class, $this->application->findRateByCode('CZK'));
+
+        Assert::exception(function () {
+            $this->application->findRateByCode('TEST');
+        }, CnbApi\Exceptions\InvalidArgumentException::class, "Code 'TEST' not found");
+    }
 }
 
 (new ApplicationTest)->run();
