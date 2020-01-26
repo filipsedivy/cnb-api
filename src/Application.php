@@ -4,6 +4,7 @@ namespace CnbApi;
 
 use CnbApi\Entity;
 use CnbApi\Exceptions;
+use CnbApi\Factory;
 use CnbApi\Source;
 use CnbApi\Utils;
 use DateTimeInterface;
@@ -13,21 +14,13 @@ class Application
     /** @var Source\ISource */
     private $source;
 
+    /** @var Factory\EntityFactory */
+    private $entityFactory;
+
     public function __construct(Source\ISource $source)
     {
         $this->source = $source;
-    }
-
-    public function getEntity(?DateTimeInterface $date = null): Entity\ExchangeRate
-    {
-        if ($date === null) {
-            $date = new Utils\DateTime('now');
-        }
-
-        $content = $this->getSource()->getByDate($date);
-        $this->getSource()->getTranslator()->setContent($content);
-
-        return $this->getSource()->getTranslator()->getEntity();
+        $this->entityFactory = new Factory\EntityFactory;
     }
 
     public function findRateByCountry(string $country, ?DateTimeInterface $date = null): Entity\Rate
@@ -57,6 +50,11 @@ class Application
         }
 
         throw new Exceptions\InvalidArgumentException("Code '$code' not found");
+    }
+
+    public function getEntity(?DateTimeInterface $date = null): Entity\ExchangeRate
+    {
+        return $this->entityFactory->create($this->getSource(), $date);
     }
 
     public function getSource(): Source\ISource
