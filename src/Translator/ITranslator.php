@@ -6,8 +6,6 @@ use CnbApi\Entity\ExchangeRate;
 
 interface ITranslator
 {
-    public function setContent(?string $content): ITranslator;
-
     public function getContent(): ?string;
 
     public function isContentEmpty(): bool;

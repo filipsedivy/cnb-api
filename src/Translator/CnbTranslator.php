@@ -6,6 +6,7 @@ use CnbApi\Entity\Country;
 use CnbApi\Entity\Currency;
 use CnbApi\Entity\ExchangeRate;
 use CnbApi\Entity\Rate;
+use CnbApi\Factory;
 use DateTime;
 
 class CnbTranslator implements ITranslator
@@ -16,11 +17,12 @@ class CnbTranslator implements ITranslator
     /** @var ExchangeRate */
     private $entity;
 
-    public function setContent(?string $content): ITranslator
+    private $czechRateFactory;
+
+    public function __construct(string $content)
     {
         $this->content = $content;
-
-        return $this;
+        $this->czechRateFactory = new Factory\CzechRateFactory;
     }
 
     public function getContent(): ?string
@@ -65,6 +67,9 @@ class CnbTranslator implements ITranslator
 
             $entity->addRate($rateEntity);
         }
+
+        // Create czech rate
+        $entity->addRate($this->czechRateFactory->create());
 
         $this->entity = $entity;
     }
