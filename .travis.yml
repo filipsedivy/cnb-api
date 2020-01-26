@@ -31,19 +31,19 @@ jobs:
         -   stage: Code Sniffer
             php: 7.3
             script:
-                - vendor/bin/phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/
+                - composer cs
 
 
         -   stage: Static Analysis
             php: 7.3
             script:
-                - travis_retry composer phpstan
+                - composer phpstan
 
 
         -   stage: Code Coverage
             php: 7.3
             script:
-                - travis_retry composer coverage
+                - composer coverage
             after_script:
                 - wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
                 - php coveralls.phar --verbose --config tests/.coveralls.yml
