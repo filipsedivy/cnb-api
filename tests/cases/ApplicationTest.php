@@ -3,6 +3,7 @@
 namespace Tests\Cases;
 
 use CnbApi;
+use DateTime;
 use Tester\Assert;
 use Tester\TestCase;
 use Tests\Engine;
@@ -23,24 +24,27 @@ class ApplicationTest extends TestCase
 
     public function testGetEntity(): void
     {
-        Assert::type(CnbApi\Entity\ExchangeRate::class, $this->application->getEntity());
+        $date = new DateTime('2019-05-22');
+        Assert::type(CnbApi\Entity\ExchangeRate::class, $this->application->getEntity($date));
     }
 
     public function testRateByCountry(): void
     {
-        Assert::type(CnbApi\Entity\Rate::class, $this->application->findRateByCountry('USA'));
+        $date = new DateTime('2019-05-22');
+        Assert::type(CnbApi\Entity\Rate::class, $this->application->findRateByCountry('USA', $date));
 
-        Assert::exception(function () {
-            $this->application->findRateByCountry('NotExists');
+        Assert::exception(function () use ($date) {
+            $this->application->findRateByCountry('NotExists', $date);
         }, CnbApi\Exceptions\InvalidArgumentException::class, "Country 'NOTEXISTS' not found");
     }
 
     public function testRateByCode(): void
     {
-        Assert::type(CnbApi\Entity\Rate::class, $this->application->findRateByCode('CZK'));
+        $date = new DateTime('2019-05-22');
+        Assert::type(CnbApi\Entity\Rate::class, $this->application->findRateByCode('CZK', $date));
 
-        Assert::exception(function () {
-            $this->application->findRateByCode('TEST');
+        Assert::exception(function () use ($date) {
+            $this->application->findRateByCode('TEST', $date);
         }, CnbApi\Exceptions\InvalidArgumentException::class, "Code 'TEST' not found");
     }
 }

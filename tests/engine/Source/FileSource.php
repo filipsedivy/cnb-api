@@ -10,15 +10,18 @@ class FileSource implements CnbApi\Source\ISource
 {
     public function getByDate(DateTimeInterface $dateTime): string
     {
-        // [PHPStan] Fix unused parameter
-        $dateTime->format('c');
+        $path = sprintf('%s/denni_kurz_%s.txt', $this->getBaseUrl(), $dateTime->format('Y_m_d'));
 
-        return file_get_contents($this->getBaseUrl());
+        if (!file_exists($path)) {
+            throw new CnbApi\Exceptions\IOException('Path not found (' . $path . ')');
+        }
+
+        return file_get_contents($path);
     }
 
     public function getBaseUrl(): string
     {
-        return DATA_DIR . '/denni_kurz.txt';
+        return DATA_DIR;
     }
 
     public function getTranslator(): string
