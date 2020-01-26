@@ -8,9 +8,6 @@ use DateTimeInterface;
 
 class CnbSource implements ISource
 {
-    /** @var Translator\ITranslator */
-    private $translator;
-
     public function getByDate(DateTimeInterface $dateTime): string
     {
         $url = $this->createUrl($dateTime);
@@ -27,11 +24,7 @@ class CnbSource implements ISource
 
     public function getTranslator(): Translator\ITranslator
     {
-        if (!$this->translator instanceof Translator\ITranslator) {
-            $this->translator = new Translator\CnbTranslator;
-        }
-
-        return $this->translator;
+        return new Translator\CnbTranslator;
     }
 
     private function createUrl(DateTimeInterface $dateTime): string
