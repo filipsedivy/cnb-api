@@ -4,7 +4,6 @@ namespace CnbApi;
 
 use CnbApi\Entity;
 use CnbApi\Exceptions;
-use CnbApi\Factory;
 use CnbApi\Source;
 use CnbApi\Utils;
 use DateTimeInterface;
@@ -14,13 +13,9 @@ class Application
     /** @var Source\ISource */
     private $source;
 
-    /** @var Factory\EntityFactory */
-    private $entityFactory;
-
     public function __construct(Source\ISource $source)
     {
         $this->source = $source;
-        $this->entityFactory = new Factory\EntityFactory;
     }
 
     public function findRateByCountry(string $country, ?DateTimeInterface $date = null): Entity\Rate
@@ -54,7 +49,14 @@ class Application
 
     public function getEntity(?DateTimeInterface $date = null): Entity\ExchangeRate
     {
-        return $this->entityFactory->create($this->getSource(), $date);
+        $date === null && $date = Utils\DateTime::now();
+
+        $className = $this->getSource()->getTranslator();
+
+        /** @var Translator\ITranslator $translator */
+        $translator = new $className($this->getSource()->getByDate($date));
+
+        return $translator->getEntity();
     }
 
     public function getSource(): Source\ISource
