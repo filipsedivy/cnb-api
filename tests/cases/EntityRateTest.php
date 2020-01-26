@@ -17,6 +17,8 @@ class EntityRateTest extends TestCase
         Assert::type('int', $entity->getAmount());
         Assert::type('float', $entity->getOneRateAmount());
         Assert::type('float', $entity->getRate());
+        Assert::type('float', $entity->getRateByAmount(4));
+        Assert::equal($entity->getRateByAmount(50), 50.00);
         Assert::type(CnbApi\Entity\Currency::class, $entity->getCurrency());
         Assert::type(CnbApi\Entity\Country::class, $entity->getCountry());
     }
