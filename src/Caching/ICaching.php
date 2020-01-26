@@ -9,5 +9,5 @@ interface ICaching
 {
     public function load(DateTimeInterface $dateTime): ?Entity\ExchangeRate;
 
-    public function save(Entity\ExchangeRate $entity): void;
+    public function save(DateTimeInterface $dateTime, Entity\ExchangeRate $entity): void;
 }
