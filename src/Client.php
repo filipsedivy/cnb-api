@@ -3,8 +3,6 @@
 namespace CnbApi;
 
 use CnbApi\Entity;
-use CnbApi\Helpers;
-use CnbApi\Mock;
 use DateTime;
 
 class Client
@@ -26,19 +24,11 @@ class Client
 
     public function findRateByCode(string $code, ?DateTime $date = null): Entity\Rate
     {
-        if (mb_strtoupper($code, 'UTF-8') === Helpers\Currency::CESKA_KORUNA) {
-            return new Mock\Entity\CzechRate;
-        }
-
         return $this->getApplication()->findRateByCode($code, $date);
     }
 
     public function findRateByCountry(string $country, ?DateTime $date = null): Entity\Rate
     {
-        if (mb_strtolower($country, 'UTF-8') === 'czech') {
-            return new Mock\Entity\CzechRate;
-        }
-
         return $this->getApplication()->findRateByCountry($country, $date);
     }
 
