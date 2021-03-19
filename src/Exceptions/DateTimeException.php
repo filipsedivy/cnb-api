@@ -2,6 +2,6 @@
 
 namespace CnbApi\Exceptions;
 
-class DateTimeException extends IOException
+final class DateTimeException extends IOException
 {
 }
