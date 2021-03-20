@@ -14,13 +14,15 @@ final class InMemoryCacheTest extends TestCase
     public function setUp(): void
     {
         $this->inMemoryCache = new InMemoryCache;
-        $this->assertCount(0, $this->inMemoryCache->getIterator());
+        self::assertCount(0, $this->inMemoryCache->getIterator());
+        self::assertEquals(0, $this->inMemoryCache->count());
     }
 
     public function tearDown(): void
     {
         $this->inMemoryCache->clear();
-        $this->assertCount(0, $this->inMemoryCache->getIterator());
+        self::assertCount(0, $this->inMemoryCache->getIterator());
+        self::assertEquals(0, $this->inMemoryCache->count());
     }
 
     public function testSave(): void
@@ -33,10 +35,10 @@ final class InMemoryCacheTest extends TestCase
             '2010-05-01 00:00:01',
         ];
 
-        $this->assertCount(0, $this->inMemoryCache->getIterator());
         $this->inMemoryCache->save(new DateTime('2010-05-01 08:00'), ['test']);
 
-        $this->assertCount(1, $this->inMemoryCache->getIterator());
+        self::assertCount(1, $this->inMemoryCache->getIterator());
+        self::assertEquals(1, $this->inMemoryCache->getIterator());
 
         foreach ($dates as $date) {
             $_date = new DateTime($date);
@@ -46,8 +48,6 @@ final class InMemoryCacheTest extends TestCase
 
     public function testFindByDate(): void
     {
-        $this->assertCount(0, $this->inMemoryCache->getIterator());
-
         $referenceValue = new DateTime('2012-05-01 08:00:04');
         $this->inMemoryCache->save($referenceValue, ['test']);
 
