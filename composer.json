@@ -14,18 +14,24 @@
 		}
 	],
 	"autoload": {
-		"classmap": [
-			"src/"
-		]
+		"psr-4": {
+			"CnbApi\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"CnbApi\\Tests\\": "tests/tests/"
+		}
 	},
 	"require": {
-		"php": ">= 7.1",
+		"php": ">= 7.4",
+		"ext-dom": "*",
 		"ext-mbstring": "*",
 		"ext-iconv": "*"
-    },
+	},
 	"require-dev": {
-		"ninjify/nunjuck": "^0.3",
-		"phpstan/phpstan": "^0.8",
+		"phpunit/phpunit": "^9.5",
+		"phpstan/phpstan": "^0.12",
 		"slevomat/coding-standard": "^5.0",
 		"squizlabs/php_codesniffer": "^3.4"
 	},
@@ -40,7 +46,7 @@
 			"@phpstan",
 			"@tester"
 		],
-		"phpstan": "phpstan analyse --level 7 --configuration tests/phpstan.neon src/",
+		"phpstan": "phpstan analyse --level 7 src/",
 		"cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases",
 		"cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
 		"tester": "nunjuck -s -c ./tests/php.ini ./tests",

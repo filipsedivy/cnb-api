@@ -2,22 +2,25 @@
 
 namespace CnbApi\Factory;
 
-use CnbApi\Entity;
+use CnbApi\Model\Entity;
 
-class CzechRateFactory
+final class CzechRateFactory
 {
-    public function create(): Entity\Rate
+    public static function createEntity(): Entity\Rate
     {
-        return new Entity\Rate($this->createCountry(), $this->createCurrency(), 1, 1.0);
+        return new Entity\Rate('Česko', 'koruna', 'CZK', 1, 1.0);
     }
 
-    public function createCurrency(): Entity\Currency
+    public static function createArray(): array
     {
-        return new Entity\Currency('koruna', 'CZK');
-    }
+        $entity = self::createEntity();
 
-    public function createCountry(): Entity\Country
-    {
-        return new Entity\Country('Česko');
+        return [
+            'code' => $entity->getCode(),
+            'currency' => $entity->getCurrency(),
+            'amount' => $entity->getAmount(),
+            'rate' => $entity->getRate(),
+            'country' => $entity->getCountry()
+        ];
     }
 }

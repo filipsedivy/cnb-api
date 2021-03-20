@@ -1,35 +1,34 @@
 <?php declare(strict_types=1);
 
-namespace CnbApi\Entity;
+namespace CnbApi\Model\Entity;
 
-class Rate
+final class Rate
 {
-    /** @var Country */
-    private $country;
+    private string $country;
 
-    /** @var Currency */
-    private $currency;
+    private string $currency;
 
-    /** @var int */
-    private $amount;
+    private int $amount;
 
-    /** @var float */
-    private $rate;
+    private float $rate;
 
-    public function __construct(Country $country, Currency $currency, int $amount, float $rate)
+    private string $code;
+
+    public function __construct(string $country, string $currency, string $code, int $amount, float $rate)
     {
         $this->country = $country;
         $this->currency = $currency;
         $this->amount = $amount;
         $this->rate = $rate;
+        $this->code = $code;
     }
 
-    public function getCountry(): Country
+    public function getCountry(): string
     {
         return $this->country;
     }
 
-    public function getCurrency(): Currency
+    public function getCurrency(): string
     {
         return $this->currency;
     }
@@ -42,6 +41,11 @@ class Rate
     public function getRate(): float
     {
         return $this->rate;
+    }
+
+    public function getCode(): string
+    {
+        return $this->code;
     }
 
     public function getOneRateAmount(): float

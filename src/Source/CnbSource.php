@@ -6,7 +6,7 @@ use CnbApi\Helpers;
 use CnbApi\Translator;
 use DateTimeInterface;
 
-class CnbSource implements ISource
+class CnbSource
 {
     public function getByDate(DateTimeInterface $dateTime): string
     {

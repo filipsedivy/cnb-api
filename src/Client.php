@@ -2,54 +2,54 @@
 
 namespace CnbApi;
 
-use CnbApi\Caching\ICaching;
-use CnbApi\Caching\NullCaching;
-use CnbApi\Entity;
+use CnbApi\Cache;
+use CnbApi\Exceptions;
+use CnbApi\Hydrator\EntityHydrator;
+use CnbApi\Model;
+use CnbApi\Source;
 use DateTime;
 
-class Client
+final class Client
 {
-    /** @var Application */
-    private $application;
+    private Source\ISource $source;
 
-    public function __construct(?ICaching $caching = null, ?Source\ISource $source = null)
+    private Cache\ICache $cache;
+
+    public function __construct(?Source\ISource $source = null, ?Cache\ICache $cache = null)
     {
-        $source = $source ?? new Source\CnbSource;
-        $caching = $caching ?? new NullCaching;
+        $source = $source ?? new Source\XmlSource;
+        $cache = $cache ?? new Cache\InMemoryCache;
 
-        $this->application = new Application($source, $caching);
+        $this->source = $source;
+        $this->cache = $cache;
     }
 
-    public function getEntity(?DateTime $date = null): Entity\ExchangeRate
+    public function getExchangeRate(?DateTime $date = null): Model\Entity\ExchangeRate
     {
-        return $this->getApplication()->getEntity($date);
-    }
+        if ($date === null) {
+            $date = new DateTime('now');
+        }
 
-    public function findRateByCode(string $code, ?DateTime $date = null): Entity\Rate
-    {
-        return $this->getApplication()->findRateByCode($code, $date);
-    }
-
-    public function findRateByCountry(string $country, ?DateTime $date = null): Entity\Rate
-    {
-        return $this->getApplication()->findRateByCountry($country, $date);
-    }
-
-    public function rate(string $from, string $to, float $amount, ?DateTime $date = null): float
-    {
-        $fromRate = $this->findRateByCode($from, $date)->getRateByAmount($amount);
-        $toRate = $this->findRateByCode($to, $date)->getOneRateAmount();
-
-        return $fromRate / $toRate;
-    }
-
-    public function getApplication(): Application
-    {
-        return $this->application;
+        return $this->loadExchangeRate($date);
     }
 
     public function getSource(): Source\ISource
     {
-        return $this->getApplication()->getSource();
+        return $this->source;
+    }
+
+    private function loadExchangeRate(?DateTime $date): Model\Entity\ExchangeRate
+    {
+        try {
+            $result = $this->cache->findByDate($date);
+        } catch (Exceptions\EntityNotFoundException $exception) {
+            $translator = $this->getSource()->getTranslator($date);
+            $result = $translator->toArray();
+            $this->cache->save($date, $result);
+        }
+
+        $hydrator = new EntityHydrator($result);
+
+        return $hydrator->result();
     }
 }

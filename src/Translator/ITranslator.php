@@ -2,13 +2,11 @@
 
 namespace CnbApi\Translator;
 
-use CnbApi\Entity\ExchangeRate;
-
 interface ITranslator
 {
-    public function getContent(): ?string;
+    public function __construct(string $data);
 
-    public function isContentEmpty(): bool;
+    public function toArray(): array;
 
-    public function getEntity(): ExchangeRate;
+    public function getData(): string;
 }
