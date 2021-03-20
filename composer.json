@@ -39,17 +39,5 @@
 		"branch-alias": {
 			"dev-master": "3.0-dev"
 		}
-	},
-	"scripts": {
-		"full": [
-			"@cs",
-			"@phpstan",
-			"@tester"
-		],
-		"phpstan": "phpstan analyse --level 7 src/",
-		"cs": "phpcs --standard=phpcs.xml --encoding=utf-8 -sp src/ tests/cases",
-		"cbf": "phpcbf --standard=phpcs.xml --colors --encoding=utf-8 -nsp src/ tests/",
-		"tester": "nunjuck -s -c ./tests/php.ini ./tests",
-		"coverage": "nunjuck -p phpdbg tests -s --coverage ./coverage.xml --coverage-src ./src"
 	}
 }
