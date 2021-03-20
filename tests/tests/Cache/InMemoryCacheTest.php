@@ -38,7 +38,7 @@ final class InMemoryCacheTest extends TestCase
         $this->inMemoryCache->save(new DateTime('2010-05-01 08:00'), ['test']);
 
         self::assertCount(1, $this->inMemoryCache->getIterator());
-        self::assertEquals(1, $this->inMemoryCache->getIterator());
+        self::assertEquals(1, $this->inMemoryCache->count());
 
         foreach ($dates as $date) {
             $_date = new DateTime($date);
@@ -57,5 +57,31 @@ final class InMemoryCacheTest extends TestCase
         $this->expectException(EntityNotFoundException::class);
         $date = new DateTime('2012-05-02');
         $this->inMemoryCache->findByDate($date);
+    }
+
+    public function testCounter(): void
+    {
+        self::assertCount(0, $this->inMemoryCache->getIterator());
+        self::assertEquals(0, $this->inMemoryCache->count());
+
+        $dates = [
+            '2000-01-01' => 1,
+            '2000-01-01 01:00:00' => 1,
+            '2000-01-01 00:00:01' => 1,
+            '2000-01-01 00:01:00' => 1,
+            '2000-01-02' => 2,
+            '2000-01-03' => 3,
+            '2000-01-03 00:00' => 3,
+            '2000-01-03 00:00:00' => 3,
+            '2000-01-03 01:00:00' => 3
+        ];
+
+        foreach ($dates as $value => $expected) {
+            $date = new DateTime($value);
+            $this->inMemoryCache->save($date, ['val']);
+
+            self::assertCount($expected, $this->inMemoryCache->getIterator());
+            self::assertEquals($expected, $this->inMemoryCache->count());
+        }
     }
 }
