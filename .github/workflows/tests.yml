@@ -1,0 +1,113 @@
+name: Tests
+
+on: [ push, pull_request ]
+
+env:
+  extensions: "json, soap, curl"
+  composer-version: "v1"
+  cache-version: "1"
+  composer-install: "composer update --no-interaction --no-progress --no-suggest --prefer-dist --prefer-stable"
+
+jobs:
+  static-analysis:
+    name: "Static analysis (${{ matrix.php-version }})"
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        php-version: [ "7.4" ]
+        operating-system: [ "ubuntu-latest" ]
+      fail-fast: false
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v2
+
+      - name: "Setup PHP cache environment"
+        id: extcache
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          key: ${{ env.cache-version }}
+
+      - name: "Cache PHP extensions"
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.extcache.outputs.dir }}
+          key: ${{ steps.extcache.outputs.key }}
+          restore-keys: ${{ steps.extcache.outputs.key }}
+
+      - name: "Install PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.extensions }}
+          tools: composer:${{ env.composer-version }}
+
+      - name: "Setup problem matchers for PHP"
+        run: 'echo "::add-matcher::${{ runner.tool_cache }}/php.json"'
+
+      - name: "Get Composer cache directory"
+        id: "composercache"
+        run: 'echo "::set-output name=dir::$(composer config cache-files-dir)"'
+
+      - name: "Cache PHP dependencies"
+        uses: actions/cache@v2
+        with:
+          path: "${{ steps.composercache.outputs.dir }}"
+          key: "${{ runner.os }}-composer-${{ hashFiles('**/composer.json') }}"
+          restore-keys: "${{ runner.os }}-composer-"
+
+      - name: "Install dependencies"
+        run: "${{ env.composer-install }}"
+
+      - name: "PHPStan"
+        run: "./vendor/bin/phpstan analyse --level max src/"
+
+  lowest_dependencies:
+    name: Lowest Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: 7.4
+          coverage: none
+          extensions: "${{ env.extensions }}"
+
+      - run: composer update --no-interaction --prefer-dist --prefer-lowest --prefer-stable
+      - run: vendor/bin/phpunit -c phpunit.xml.dist
+
+  tests:
+    name: "PHPUnit (${{ matrix.php-version }})"
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      matrix:
+        php-version: [ "7.4" ]
+        operating-system: [ "ubuntu-latest" ]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          tools: composer:v2, pecl
+          extensions: ${{ env.extensions }}
+          coverage: xdebug
+
+      - name: Install dependencies
+        run: ${{ env.composer-install }}
+
+      - name: Execute tests
+        run: vendor/bin/phpunit -c phpunit.xml.dist
+
+      - name: Send code coverage report to coveralls.io
+        run: vendor/bin/php-coveralls -c .coveralls.yml -v
+        env:
+          COVERALLS_RUN_LOCALLY: 1
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
