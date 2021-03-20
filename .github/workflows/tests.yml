@@ -106,6 +106,9 @@ jobs:
       - name: Execute tests
         run: vendor/bin/phpunit -c phpunit.xml.dist
 
+      - name: Install Coveralls.io
+        run: composer require php-coveralls/php-coveralls
+
       - name: Send code coverage report to coveralls.io
         run: vendor/bin/php-coveralls -c .coveralls.yml -v
         env:
