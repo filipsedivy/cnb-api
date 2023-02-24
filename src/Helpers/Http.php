@@ -49,7 +49,9 @@ class Http
         $content = @file_get_contents($this->url, false, $context);
 
         if ($content === false) {
-            throw new Exceptions\CoreException(error_get_last()['message']);
+            $error = error_get_last();
+            $message = $error === null || array_key_exists('message', $error) === false ? 'HTTP failed' : $error['message'];
+            throw new Exceptions\CoreException($message);
         }
 
         $this->content = $content;
